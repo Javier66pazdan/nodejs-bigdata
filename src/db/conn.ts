@@ -1,4 +1,4 @@
-import { MongoClient, Db } from "mongodb";
+import {MongoClient, Db, Collection, Document} from "mongodb";
 
 const connectionString = process.env.MONGODB_URI || "";
 
@@ -41,9 +41,14 @@ class MongoDBConnection {
         }
     }
 
-    async getTestCollection() {
+    async getTestCollection(): Promise<Collection<Document>> {
         const nodejsBigdataDbConnection = await this.getNodejsBigdataDbConnection();
         return nodejsBigdataDbConnection.collection(process.env.TEST_COLLECTION as string)
+    }
+
+    async getMoviesCollection(): Promise<Collection<Document>> {
+        const nodejsBigdataDbConnection = await this.getNodejsBigdataDbConnection();
+        return nodejsBigdataDbConnection.collection(process.env.MOVIES_COLLECTION as string)
     }
 }
 

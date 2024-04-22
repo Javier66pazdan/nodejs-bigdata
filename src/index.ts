@@ -1,20 +1,15 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-import { singletonMongoDBConnection } from "./db/conn"
+// Routes after env config
+import {moviesRouter} from "./routes/movies";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
-app.get("/", async (req: Request, res: Response) => {
-    let testCollection = await singletonMongoDBConnection.getTestCollection();
-    let results = await testCollection.find({})
-        .toArray();
-
-    res.send(results).status(200);
-});
+app.use('/movies', moviesRouter);
 
 app.listen(port, () => {
     console.log(`Serwer został uruchomiony na porcie ${port}`);
