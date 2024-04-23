@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 
 import {singletonMongoDBConnection} from "../db/conn";
-import {GetMoviesQueryParams, SortOptions} from "../core/interfaces/getMovies.interfaces";
+import {GetMoviesQueryParams, PostMoviesBody, SortOptions} from "../core/interfaces/getMovies.interfaces";
 import {Sort} from "mongodb";
 
 export const moviesRouter = Router();
@@ -38,5 +38,13 @@ moviesRouter
             .toArray();
 
         res.send(moviesResults).status(200);
-    });
+    })
+    .post('/', async (req: Request<unknown, unknown, PostMoviesBody, unknown>, res: Response) => {
+        const postMovieBody: PostMoviesBody = req.body;
 
+        const moviesCollection = await singletonMongoDBConnection.getMoviesCollection();
+
+        await moviesCollection.insertOne(postMovieBody);
+
+        res.send({message: "Successfully added a new record."}).status(200);
+    });
