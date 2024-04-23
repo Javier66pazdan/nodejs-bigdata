@@ -34,3 +34,8 @@ export interface PostMoviesBody {
     "vote_average": number;
     "vote_count": number;
 }
+
+export interface PatchMoviesBody {
+    _id: string;
+    body: Partial<PostMoviesBody>;
+}

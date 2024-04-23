@@ -1,8 +1,13 @@
 import {Request, Response, Router} from "express";
+import {ObjectId, Sort} from "mongodb";
 
 import {singletonMongoDBConnection} from "../db/conn";
-import {GetMoviesQueryParams, PostMoviesBody, SortOptions} from "../core/interfaces/getMovies.interfaces";
-import {Sort} from "mongodb";
+import {
+    GetMoviesQueryParams,
+    PatchMoviesBody,
+    PostMoviesBody,
+    SortOptions
+} from "../core/interfaces/getMovies.interfaces";
 
 export const moviesRouter = Router();
 
@@ -47,4 +52,15 @@ moviesRouter
         await moviesCollection.insertOne(postMovieBody);
 
         res.send({message: "Successfully added a new record."}).status(200);
-    });
+    }).patch('/', async (req: Request<unknown, unknown, PatchMoviesBody, unknown>, res: Response) => {
+    const patchMovieBody: PatchMoviesBody = req.body;
+
+    const id = { _id: new ObjectId(patchMovieBody._id) };
+    const body = { $set: {...patchMovieBody.body} }
+
+    const moviesCollection = await singletonMongoDBConnection.getMoviesCollection();
+
+    await moviesCollection.updateOne(id, body);
+
+    res.send({message: `Successfully updated record with id ${patchMovieBody._id}.`}).status(200);
+});
