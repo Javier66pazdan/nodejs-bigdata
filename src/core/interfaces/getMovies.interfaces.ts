@@ -39,3 +39,15 @@ export interface PatchMoviesBody {
     _id: string;
     body: Partial<PostMoviesBody>;
 }
+
+export interface DeleteMoviesUrlParams {
+    id: string;
+}
+
+export interface Aggregation {
+    [stageName: string]: {};
+}
+
+export interface PostAggregateBody {
+    aggregations: Aggregation[];
+}
