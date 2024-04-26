@@ -83,4 +83,13 @@ moviesRouter
         await moviesCollection.deleteOne(movieIdToDelete);
 
         res.send({message: `Successfully deleted record with id ${movieIdToDelete}.`}).status(200);
+    }).post('/aggregate', async (req: Request<unknown, unknown, PostAggregateBody[]>, res: Response) => {
+        const aggregations = req.body;
+
+        const moviesCollection = await singletonMongoDBConnection.getMoviesCollection();
+
+        const aggregationResults = await moviesCollection.aggregate(aggregations);
+        const aggregationResultsAsArray = await aggregationResults.toArray();
+
+        res.send(aggregationResultsAsArray).status(200);
     });
