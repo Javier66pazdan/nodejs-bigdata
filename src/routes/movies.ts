@@ -40,7 +40,7 @@ moviesRouter
             .find({})
             .sort(sortOptions)
             .skip(skip)
-            .limit(per_page)
+            .limit(Number(per_page))
             .toArray();
 
         res.send(moviesResults).status(200);
@@ -82,7 +82,7 @@ moviesRouter
 
         await moviesCollection.deleteOne(movieIdToDelete);
 
-        res.send({message: `Successfully deleted record with id ${movieIdToDelete}.`}).status(200);
+        res.send({message: `Successfully deleted record with id ${movieIdToDelete._id}.`}).status(200);
     }).post('/aggregate', async (req: Request<unknown, unknown, PostAggregateBody[]>, res: Response) => {
         const aggregations = req.body;
 
