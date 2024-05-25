@@ -1,0 +1,1 @@
+export const CHUNKS_DIR = './chunks';

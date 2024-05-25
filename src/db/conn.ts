@@ -50,6 +50,16 @@ class MongoDBConnection {
         const nodejsBigdataDbConnection = await this.getNodejsBigdataDbConnection();
         return nodejsBigdataDbConnection.collection(process.env.MOVIES_COLLECTION as string)
     }
+
+    async getMoviesUploadCollection(): Promise<Collection<Document>> {
+        const nodejsBigdataDbConnection = await this.getNodejsBigdataDbConnection();
+        return nodejsBigdataDbConnection.collection(process.env.MOVIES_UPLOAD_COLLECTION as string)
+    }
+
+    async getMoviesPostprocessCollection(): Promise<Collection<Document>> {
+        const nodejsBigdataDbConnection = await this.getNodejsBigdataDbConnection();
+        return nodejsBigdataDbConnection.collection(process.env.MOVIES_POSTPROCESS_COLLECTION as string)
+    }
 }
 
 export const singletonMongoDBConnection = new MongoDBConnection();
